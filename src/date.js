@@ -1,15 +1,7 @@
-
 /*
-is
-now
-
-serverNow
-
-parse
-format
-diff
-ago
-toUnixTime
+Time Landscape
+@VERSION 0.0.1
+@AUTUAR yuji@baidu.com
 
 --
 y  year
@@ -19,14 +11,10 @@ d  day
 h hour
 m minute
 s second
+
+w week
+z timezone offset
 ----
-
-Date()
-new Date().xx().xx();
-
-
-
-
  */
 
 !function(WIN, D, undef) {
@@ -87,6 +75,15 @@ new Date().xx().xx();
     }
 
     /**
+     * [clone description]
+     * @param  {[type]} date [description]
+     * @return {[type]}      [description]
+     */
+    _.clone = function(date) {
+        return new D(+date); 
+    };
+
+    /**
      * Returns a timestamp of now
      * @return {Number} [description]
      */
@@ -109,6 +106,11 @@ new Date().xx().xx();
     _.toUTC = function(date) {
         return new D(date.getTime() + date.getTimezoneOffset() * scale.m);
     }
+
+
+/*    _.toAmPM: function(date) {
+        return date.getHours() >= 12 ? 'PM' : 'AM';
+    },*/
 
     /**
      * Converts a Date object into ISO 8601 formatted string
@@ -251,6 +253,12 @@ new Date().xx().xx();
         return date;
     }
 
+    /**
+     * Diffent between two Date object
+     * @param  {Date} date  [description]
+     * @param  {Date} _date [description]
+     * @return {Object}       [description]
+     */
     _.diff = function(date, _date) {
         var diff = _date - date
             , result = {};
