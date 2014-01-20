@@ -1,3 +1,6 @@
+
+document.getElementById("needle").clientWidth > 393 && (document.body.className += " non-opentype");
+
 function flipClock(el, to, from){
     var fore = el.querySelector(".fore")
         , back = el.querySelector(".back")
@@ -72,9 +75,9 @@ document.addEventListener && function(DOC, rAF) {
         };
     localClock.parentNode.classList.add("cur");
     refresh();
-}(document, requestAnimationFrame
-|| webkitRequestAnimationFrame
-|| mozRequestAnimationFrame
+}(document, window.requestAnimationFrame
+|| window.webkitRequestAnimationFrame
+|| window.mozRequestAnimationFrame
 || function(callback){
     setTimeout(callback, 1000 / 60);
 });
