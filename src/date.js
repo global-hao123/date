@@ -69,7 +69,7 @@ z timezone offset
      * @param  {[type]} end   [description]
      * @return {[type]}       [description]
      */
-    _.in = function(date, start, end) {
+    _.contains = function(date, start, end) {
         date = date.getTime();
         return date >= start.getTime() && date <= end.getTime();
     }
