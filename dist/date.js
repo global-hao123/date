@@ -1,1 +1,81 @@
-!function(WIN,D,undef){var _={},scale={d:864e5,h:36e5,m:6e4,s:1e3,ms:1},pad=function(num,len){len=Math.pow(10,len||2);return num<len?(len+num+"").slice(1):num+""},each=function(obj,cb){if(obj.length!==undef){for(var i=0,l=obj.length;i<l;i++){if(i in obj){if(cb.call(obj[i],obj[i],i,obj)===!1)break}}}else{for(var i in obj){if(obj.hasOwnProperty(i)){if(cb.call(obj[i],obj[i],i,obj)===!1)break}}}};_.VERSION="0.0.1";_.is=function(date){return date instanceof D&&!isNaN(date)};_.in=function(date,start,end){date=date.getTime();return date>=start.getTime()&&date<=end.getTime()};_.now=D.now||function(){return+new D};_.toUnix=function(date){return Math.round(date.getTime()/scale.s)};_.toUTC=function(date){return new D(date.getTime()+date.getTimezoneOffset()*scale.m)};_.toISOString=function(date){return date.getUTCFullYear()+"-"+pad(date.getUTCMonth()+1)+"-"+pad(date.getUTCDate())+"T"+pad(date.getUTCHours())+":"+pad(date.getUTCMinutes())+":"+pad(date.getUTCSeconds())+"."+((date.getUTCMilliseconds()/scale.s).toFixed(3)+"").slice(2,5)+"Z"};_.format=function(date,pattern){var result={y:date.getFullYear(),M:date.getMonth()+1,d:date.getDate(),h:date.getHours(),m:date.getMinutes(),s:date.getSeconds(),w:date.getDay(),z:date.getTimezoneOffset()/60*-1};if(!pattern)return result;each(result,function(v,k){pattern=pattern.replace(/(y+)/g,function(a,b){return(v+"").substr(4-Math.min(4,b.length))}).replace(new RegExp("("+k+"+)","g"),function(a,b){return pad(v,b.length)})});return pattern};_.timezone=function(date,timezone){date.setTime(_.toUTC(date).getTime()+(timezone||0)*scale.h);return date};_.isLeapYear=function(y){if(_.is(y))y=y.getFullYear();return y%4===0&&y%100!==0||y%400===0};_.days=function(M,y){if(_.is(M)){y=M.getFullYear();M=M.getMonth()+1}return[31,_.isLeapYear(y||(new D).getFullYear())?29:28,31,30,31,30,31,31,30,31,30,31][M-1]};_.add=function(date,offset){if(offset===+offset)offset={d:offset};offset=offset||{};var addMonths=function(date,n){var _d=date.getDate();date.setDate(1);date.setMonth(date.getMonth()+n);date.setDate(Math.min(_d,_.days(date)));return date};each(offset,function(v,k){if(k==="M")date=addMonths(date,v);if(k==="y")date=addMonths(date,v*12);scale[k]&&date.setMilliseconds(date.getMilliseconds()+scale[k]*v)});return date};_.diff=function(date,_date){var diff=_date-date,result={};each(scale,function(v,k){var n=0;if(Math.abs(diff)>v){n=Math.floor(diff/v);diff=diff%v}result[k]=n});return result};_.extend=function(source,target){target=target||D;source=source||this;var args=arguments;each(source,function(v,k){target[k]=v;v!==args.callee&&target.prototype[k]===undef&&(target.prototype[k]=function(){var self=this;return v.apply(self,[].concat.apply(self,[].slice.call(arguments)))})});return _};_.extend()}(window,window.Date);
+!function(e, t) {
+    "function" == typeof define && define.amd ? define(t) : "object" == typeof exports ? module.exports = t(require, exports, module) : t();
+}(this, function() {
+    var e, t = window, n = t.Date, r = {}, i = {
+        d: 864e5,
+        h: 36e5,
+        m: 6e4,
+        s: 1e3,
+        ms: 1
+    }, o = function(e, t) {
+        return t = Math.pow(10, t || 2), t > e ? (t + e + "").slice(1) : e + "";
+    }, u = function(t, n) {
+        if (t.length !== e) for (var r = 0, i = t.length; i > r && !(r in t && n.call(t[r], t[r], r, t) === !1); r++) ; else for (var r in t) if (t.hasOwnProperty(r) && n.call(t[r], t[r], r, t) === !1) break;
+    };
+    r.VERSION = "0.0.1", r.is = function(e) {
+        return e instanceof n && !isNaN(e);
+    }, r.contains = function(e, t, n) {
+        return e = e.getTime(), e >= t.getTime() && e <= n.getTime();
+    }, r.clone = function(e) {
+        return new n(+e);
+    }, r.now = n.now || function() {
+        return +new n();
+    }, r.toUnix = function(e) {
+        return Math.round(e.getTime() / i.s);
+    }, r.toUTC = function(e) {
+        return new n(e.getTime() + e.getTimezoneOffset() * i.m);
+    }, r.toISOString = function(e) {
+        return e.getUTCFullYear() + "-" + o(e.getUTCMonth() + 1) + "-" + o(e.getUTCDate()) + "T" + o(e.getUTCHours()) + ":" + o(e.getUTCMinutes()) + ":" + o(e.getUTCSeconds()) + "." + ((e.getUTCMilliseconds() / i.s).toFixed(3) + "").slice(2, 5) + "Z";
+    }, r.format = function(e, t) {
+        var n = {
+            y: e.getFullYear(),
+            M: e.getMonth() + 1,
+            d: e.getDate(),
+            h: e.getHours(),
+            m: e.getMinutes(),
+            s: e.getSeconds(),
+            w: e.getDay(),
+            z: e.getTimezoneOffset() / 60 * -1
+        };
+        return t ? (u(n, function(e, n) {
+            t = t.replace(/(y+)/g, function(t, n) {
+                return (e + "").substr(4 - Math.min(4, n.length));
+            }).replace(new RegExp("(" + n + "+)", "g"), function(t, n) {
+                return o(e, n.length);
+            });
+        }), t) : n;
+    }, r.timezone = function(e, t) {
+        return e.setTime(r.toUTC(e).getTime() + (t || 0) * i.h), e;
+    }, r.isLeapYear = function(e) {
+        return r.is(e) && (e = e.getFullYear()), e % 4 === 0 && e % 100 !== 0 || e % 400 === 0;
+    }, r.days = function(e, t) {
+        return r.is(e) && (t = e.getFullYear(), e = e.getMonth() + 1), [ 31, r.isLeapYear(t || new n().getFullYear()) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ][e - 1];
+    }, r.add = function(e, t) {
+        t === +t && (t = {
+            d: t
+        }), t = t || {};
+        var n = function(e, t) {
+            var n = e.getDate();
+            return e.setDate(1), e.setMonth(e.getMonth() + t), e.setDate(Math.min(n, r.days(e))), 
+            e;
+        };
+        return u(t, function(t, r) {
+            "M" === r && (e = n(e, t)), "y" === r && (e = n(e, 12 * t)), i[r] && e.setMilliseconds(e.getMilliseconds() + i[r] * t);
+        }), e;
+    }, r.diff = function(e, t) {
+        var n = t - e, r = {};
+        return u(i, function(e, t) {
+            var i = 0;
+            Math.abs(n) > e && (i = Math.floor(n / e), n %= e), r[t] = i;
+        }), r;
+    }, r.extend = function(t, i) {
+        i = i || n, t = t || this;
+        var o = arguments;
+        return u(t, function(t, n) {
+            i[n] = t, t !== o.callee && i.prototype[n] === e && (i.prototype[n] = function() {
+                var e = this;
+                return t.apply(e, [].concat.apply(e, [].slice.call(arguments)));
+            });
+        }), r;
+    }, r.extend();
+});
